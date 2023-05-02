@@ -1,5 +1,6 @@
 import { produce } from 'immer'
-
+import sound from '../../assets/sound.mp3'
+import sound2 from '../../assets/sound2.mp3'
 import { ActionTypes } from './actions'
 
 export interface Cycle {
@@ -17,6 +18,13 @@ interface CyclesState {
 }
 
 export function cyclesReducer(state: CyclesState, action: any) {
+  function VictorySound() {
+    new Audio(sound).play()
+  }
+
+  function EmotionalDamageSound() {
+    new Audio(sound2).play()
+  }
   switch (action.type) {
     case ActionTypes.ADD_NEW_CYCLE:
       return produce(state, (draft) => {
@@ -36,6 +44,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       return produce(state, (draft) => {
         draft.activeCycleId = null
         draft.cycles[currentCycleIndex].interruptedDate = new Date()
+        EmotionalDamageSound()
       })
     }
 
@@ -51,6 +60,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       return produce(state, (draft) => {
         draft.activeCycleId = null
         draft.cycles[currentCycleIndex].finishedDate = new Date()
+        VictorySound()
       })
     }
     default:
